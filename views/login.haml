@@ -1,0 +1,17 @@
+
+%h2="login"
+
+%form#login_signup_form{ :action => "/login/", :method => "post" }
+    %p
+        %strong="username"
+        %br
+        %input.text_input{ :type => "text", :name => "username", :tabindex => 1 }
+    %p
+        %strong="password"
+        %br
+        %input.text_input{ :type => "password", :name => "password", :tabindex => 2 }
+    %p
+        %input{ :type => "submit", :value => "login" }
+        ="or"
+        %a{ :href => "/signup/" }="signup"
+

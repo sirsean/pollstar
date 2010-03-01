@@ -1,0 +1,39 @@
+
+%h2="#{@poll.question}"
+
+- if @poll.active
+    - if not @voted
+        %form{ :action => "/poll/#{@poll.id}/vote/", :method => "post" }
+            %ul
+                - @poll.answers.each do |answer|
+                    %li
+                        %input{ :type => "radio", :id => "answer_#{answer["index"]}", :name => "answer", :value => answer["index"] }
+                        %label{ :for => "answer_#{answer["index"]}" }="#{answer["text"]}"
+
+            %input{ :type => "submit", :value => "vote" }
+    - else
+        %ul
+            - @answer_votes.each do |answer|
+                %li
+                    %span="#{answer["text"]}"
+                    %strong="#{answer["num_votes"]} / #{@votes.count}"
+- else
+    %em="This poll is inactive"
+    %ul
+        - @poll.answers.each do |answer|
+            %li="#{answer}"
+
+- if @is_owner
+    .people_who_voted
+        %h3="people who voted"
+        - if @votes.count > 0
+            %ul
+            - @votes.each do |vote|
+                %li
+                    - if not vote.user_full_name.empty?
+                        %span="#{vote.user_full_name}"
+                    - else
+                        %span="anonymous"
+        - else
+            %em="nobody has voted yet"
+

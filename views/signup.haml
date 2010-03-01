@@ -1,0 +1,34 @@
+
+%h2="signup"
+
+%form#login_signup_form{ :action => "/signup/", :method => "post" }
+    %p
+        %strong="username"
+        %br
+        %input.text_input{ :type => "text", :name => "username", :tabindex => 1 }
+        %br
+        ="this is a unique identifier you'll use to log in later"
+    %p
+        %strong="name"
+        %br
+        %input.text_input{ :type => "text", :name => "full_name", :tabindex => 2 }
+        %br
+        ="we'll use this for a pretty version of your name, which you may find useful"
+    %p
+        %strong="email"
+        %br
+        %input.text_input{ :type => "text", :name => "email", :tabindex => 3 }
+        %br
+        ="we'll use this in case you forget your password (thus it's in your interest to enter a real one) ... and we promise not to spam you or sell your email address to anyone, ever"
+    %p
+        %strong="password"
+        %br
+        %input.text_input{ :type => "password", :name => "password1", :tabindex => 4 }
+    %p
+        %strong="repeat password"
+        %br
+        %input.text_input{ :type => "password", :name => "password2", :tabindex => 5 }
+    %p
+        %input{ :type => "submit", :value => "signup" }
+        ="or"
+        %a{ :href => "/login/" }="login"

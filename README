@@ -1,0 +1,22 @@
+pollstar is an open source web app that lets you set up polls for other people to take, or to take other people's polls. Its aim is to be as simple as possible.
+
+To set it up, you'll first need Mongo installed and running.
+
+1. [Download Mongo](http://www.mongodb.org/display/DOCS/Downloads)
+2. Unpack it (unzip, tar, etc)
+3. cd Downloads/mongodb-osx-x86_64-1.2.1 (or whatever the path is to the directory you just unpacked)
+4. bin/mongod
+
+Your Mongo server is running! Now you'll need to install some gems:
+
+    gem install mongo
+    gem install mongo_mapper
+    gem install sinatra
+    gem install json
+    gem install haml
+
+Then you can run the server:
+
+    ruby pollstar_server.rb
+
+Go to http://localhost:4567/ to start making polls in your local environment!

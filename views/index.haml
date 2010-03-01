@@ -1,0 +1,14 @@
+
+%h2="welcome to pollstar"
+
+%ul
+    %li="create polls and view the results"
+    %li="get rss feeds from people whose polls you want to take, so you can easily come back and take them"
+    %li="that's it! pollstar is as simple as that, and as interesting as you make it"
+
+- if not @current_user
+    %p
+        %a{ :href => "/login/" }="login"
+        ="or"
+        %a{ :href => "/signup/" }="signup"
+

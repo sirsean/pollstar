@@ -1,0 +1,29 @@
+
+
+%form.create_form{ :method => "post" }
+    %h2="enter your question..."
+    %textarea{ :name => "question", :cols => "40", :rows => "6", :tabindex => 1 }="#{@question}"
+
+    %h2="and then enter some possible answers..."
+
+    %p
+        %input.answer{ :type => "text", :name => "answers[]", :tabindex => 2 }
+    %p
+        %input.answer{ :type => "text", :name => "answers[]", :tabindex => 3 }
+    %p#add_answer_paragraph
+        %a#add_answer_link{ :href => "#" }="add another answer"
+
+    %p
+        %input{ :type => "submit", :value => "publish poll" }
+
+:javascript
+    $(document).ready(function() {
+        var answer_index = 2;
+        var tabindex = 4;
+        $("#add_answer_link").click(function() {
+            $('<p><input id="answer_' + answer_index + '" type="text" class="answer" name="answers[]" tabindex="' + tabindex + '" /></p>').insertBefore("#add_answer_paragraph");
+            $('#answer_' + answer_index).focus();
+            answer_index++;
+            tabindex++;
+        });
+    });

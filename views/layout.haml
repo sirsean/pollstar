@@ -1,0 +1,47 @@
+%html
+    %head
+        %title="pollstar"
+        %link{ :rel => "stylesheet", :type => "text/css", :href => "/stylesheet.css" }
+        %script{ :type => "text/javascript", :src => "http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js" }
+    %body
+        #header
+            #header_left
+                %h1
+                    %a{ :href => "/" }="pollstar"
+            #header_right
+                - if @current_user
+                    %a{:href => "/home/"}="home"
+                    %a{:href => "/poll/create/"}="create poll"
+                    %a{ :href => "/logout/" }="logout"
+                - else
+                    %a{:href => "/login/"}="login"
+                    or
+                    %a{:href => "/signup/"}="signup"
+        .clear
+        #outer_container
+            #main_container
+                - if @errors and @errors.length > 0
+                    %ul.errors
+                        - @errors.each do |error|
+                            %li="#{error}"
+                = yield
+            #sidebar
+                - if @sidebar
+                    .user_info
+                        %a{ :href => "/user/#{@sidebar["username"]}/" }="#{@sidebar["full_name"]}"
+                    - if not @sidebar["recent_polls"].empty?
+                        .recent_polls
+                            %span="your recent polls"
+                            = list_polls(@sidebar["recent_polls"])
+            .clear
+        #footer
+            %p
+                ="&copy; 2010, Sean Schulte"
+                %br
+                %a{ :href => "http://vikinghammer.com/" }="Vikinghammer"
+
+        :javascript
+            $(document).ready(function() {
+                $("form :input:visible:enabled:first").focus();
+            });
+

@@ -1,0 +1,20 @@
+
+%h2="welcome, #{@current_user.full_name}!"
+
+%h3
+    %a{ :href => "/user/#{@current_user.username}/polls/" }="your polls"
+    ="("
+    %a{ :href => "/user/#{@current_user.username}/polls/feed/" }="rss"
+    =")"
+
+- if @polls.empty?
+    .empty_list
+        %p="you don't have any polls yet"
+        %p
+            %a{ :href => "/poll/create/" }="create a poll!"
+- else
+    = list_polls(@polls)
+
+%h3="polls you voted on"
+
+= list_polls(@polls_voted_on)

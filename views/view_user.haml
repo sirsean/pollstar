@@ -1,0 +1,16 @@
+
+%h2="#{@user.full_name}"
+
+- if @is_you
+    %p
+        %em="this is you!"
+
+- if not @polls.empty?
+    %h3
+        %a{ :href => "/user/#{@user.username}/polls/" }="polls"
+    = list_polls(@polls)
+
+- if not @polls_voted_on.empty?
+    %h3="polls #{@user.username} voted on"
+    = list_polls(@polls_voted_on)
+

@@ -1,0 +1,11 @@
+
+%h2="#{@user.full_name} / polls"
+
+%p
+    %a{ :href => "/user/#{@user.username}/polls/feed/" }="rss feed"
+
+- if @polls.count > 0
+    = list_polls(@polls)
+- else
+    %p
+        %em="no polls yet"

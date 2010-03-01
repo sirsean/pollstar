@@ -1,0 +1,6 @@
+
+%ul
+    - @polls.each do |poll|
+        %li
+            %a{ :href => "/poll/#{poll.id}/" }="#{poll.question}"
+

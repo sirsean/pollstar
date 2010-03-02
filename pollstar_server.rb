@@ -162,6 +162,9 @@ post '/poll/create/?' do
     if not answers or answers.empty?
         @errors << "a poll needs at least one answer"
     end
+    if answers and answers.count > @current_user.max_answers_per_poll
+        @errors << "you must upgrade your account to use more than #{@current_user.max_answers_per_poll} answers"
+    end
 
     if not @errors.empty?
         @question = params["question"]

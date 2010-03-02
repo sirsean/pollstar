@@ -54,5 +54,13 @@ This is based on the user's account level.
         end
     end
 
+    def max_answers_per_poll
+        if [:deluxe, :standard, :cheapo].include?(@account_level)
+            return nil
+        else
+            return 3
+        end
+    end
+
 end
 

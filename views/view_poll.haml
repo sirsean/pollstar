@@ -6,7 +6,7 @@
         %em="this poll is expired ... the results may be deleted at any time"
 -else
     - if @poll.active
-        - if not @voted
+        - if not @voted and @votes.count < @poll.max_votes
             %form.vote_form{ :action => "/poll/#{@poll.id}/vote/", :method => "post" }
                 %ul
                     - @poll.answers.each do |answer|

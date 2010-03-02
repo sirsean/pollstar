@@ -176,6 +176,7 @@ post '/poll/create/?' do
             map{ |answer| { :index => index += 1, :text => answer } },
         :active => true,
         :created_at => Time.now,
+        :max_votes => @current_user.max_votes_per_poll,
     })
     if @current_user.poll_duration
         poll.expires_at = Time.now + @current_user.poll_duration
@@ -223,6 +224,11 @@ post '/poll/:poll_id/vote/?' do |poll_id|
         poll = Poll.find(poll_id)
 
         if poll.expired?
+            return redirect "/poll/#{poll_id}/"
+        end
+
+        votes = Vote.get_by_poll_id(poll.id)
+        if poll.max_votes and votes.count >= poll.max_votes
             return redirect "/poll/#{poll_id}/"
         end
 

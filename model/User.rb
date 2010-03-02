@@ -44,5 +44,15 @@ This is based on the user's account level.
         end
     end
 
+    def max_votes_per_poll
+        if @account_level == :deluxe or @account_level == :standard
+            return nil
+        elsif @account_level == :cheapo
+            return 200
+        else 
+            return 50
+        end
+    end
+
 end
 

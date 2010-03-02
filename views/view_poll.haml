@@ -1,54 +1,58 @@
 
 %h2="#{@poll.question}"
 
-- if @poll.active
-    - if not @voted
-        %form.vote_form{ :action => "/poll/#{@poll.id}/vote/", :method => "post" }
-            %ul
-                - @poll.answers.each do |answer|
-                    %li
-                        %input{ :type => "radio", :id => "answer_#{answer["index"]}", :name => "answer", :value => answer["index"] }
-                        %label{ :for => "answer_#{answer["index"]}" }="#{answer["text"]}"
+- if @poll.expired?
+    %p
+        %em="this poll is expired ... the results may be deleted at any time"
+-else
+    - if @poll.active
+        - if not @voted
+            %form.vote_form{ :action => "/poll/#{@poll.id}/vote/", :method => "post" }
+                %ul
+                    - @poll.answers.each do |answer|
+                        %li
+                            %input{ :type => "radio", :id => "answer_#{answer["index"]}", :name => "answer", :value => answer["index"] }
+                            %label{ :for => "answer_#{answer["index"]}" }="#{answer["text"]}"
 
-            %input{ :type => "submit", :value => "vote" }
-    - else
-        %ul.answer_list
-            - @answer_votes.each do |answer|
-                %li
-                    %span="#{answer["text"]}"
-                    %strong="#{answer["num_votes"]}"
-- else
-    %em="This poll is inactive"
-    %ul.answer_list
-        - @poll.answers.each do |answer|
-            %li="#{answer}"
-
-- if @is_owner or @voted
-    #results_container
-        %table#results_chart
-            %thead
-                %tr
-                    %td=""
-                    %th="votes"
-            %tbody
-                - @answer_votes.each do |answer|
-                    %tr
-                        %th="#{answer["text"]}"
-                        %td="#{answer["num_votes"]}"
-
-- if @is_owner
-    .people_who_voted
-        %h3="people who voted"
-        - if @votes.count > 0
-            %ul
-            - @votes.each do |vote|
-                %li
-                    - if not vote.username.empty?
-                        %a{ :href => "/user/#{vote.username}/" }="#{vote.user_full_name}"
-                    - else
-                        %span="anonymous"
+                %input{ :type => "submit", :value => "vote" }
         - else
-            %em="nobody has voted yet"
+            %ul.answer_list
+                - @answer_votes.each do |answer|
+                    %li
+                        %span="#{answer["text"]}"
+                        %strong="#{answer["num_votes"]}"
+    - else
+        %em="This poll is inactive"
+        %ul.answer_list
+            - @poll.answers.each do |answer|
+                %li="#{answer}"
+
+    - if @is_owner or @voted
+        #results_container
+            %table#results_chart
+                %thead
+                    %tr
+                        %td=""
+                        %th="votes"
+                %tbody
+                    - @answer_votes.each do |answer|
+                        %tr
+                            %th="#{answer["text"]}"
+                            %td="#{answer["num_votes"]}"
+
+    - if @is_owner
+        .people_who_voted
+            %h3="people who voted"
+            - if @votes.count > 0
+                %ul
+                - @votes.each do |vote|
+                    %li
+                        - if not vote.username.empty?
+                            %a{ :href => "/user/#{vote.username}/" }="#{vote.user_full_name}"
+                        - else
+                            %span="anonymous"
+            - else
+                %em="nobody has voted yet"
 
 :javascript
     $(document).ready(function() {

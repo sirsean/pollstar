@@ -176,6 +176,9 @@ post '/poll/create/?' do
         :active => true,
         :created_at => Time.now,
     })
+    if @current_user.poll_duration
+        poll.expires_at = Time.now + @current_user.poll_duration
+    end
     poll.save
 
     puts "Created poll: #{poll.id}"

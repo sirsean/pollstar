@@ -19,5 +19,14 @@ class User
         User.all(:username => username, :password => password).first
     end
 
+=begin 
+How long the user's polls last before they expire and can't be voted on any more.
+If this is nil, then the polls will never expire.
+This is based on the user's account level.
+=end
+    def poll_duration
+        3.months
+    end
+
 end
 

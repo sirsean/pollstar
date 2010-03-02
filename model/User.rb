@@ -14,6 +14,7 @@ class User
     key :password, String
     key :full_name, String
     key :account_level
+    key :monthly_rate, Integer
 
     def self.username_exists?(username)
         User.all(:username => username).count > 0
@@ -25,6 +26,19 @@ class User
 
     def self.get_by_username_and_password(username, password)
         User.all(:username => username, :password => password).first
+    end
+
+    def self.get_monthly_rate_by_account_level(account_level)
+        case account_level
+            when :deluxe
+                10
+            when :standard
+                5
+            when :cheapo
+                2
+            when :free
+                0
+        end
     end
 
 =begin 
@@ -60,6 +74,10 @@ This is based on the user's account level.
         else
             return 3
         end
+    end
+
+    def can_copy_own_polls?
+        [:deluxe, :standard, :cheapo].include?(@account_level)
     end
 
 end

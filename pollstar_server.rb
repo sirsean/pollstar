@@ -23,6 +23,7 @@ before do
         @sidebar = {
             "username" => @current_user.username,
             "full_name" => @current_user.full_name,
+            "account_level" => @current_user.account_level,
             "recent_polls" => Poll.get_latest_by_user_id(@current_user.id, 4),
         }
     else
@@ -71,14 +72,18 @@ post '/signup/?' do
         @errors << "passwords must match"
     end
 
-    if not @errors.empty?
-        return haml :signup
-    end
-
     if not params["account_level"]
         account_level = :free
     else
         account_level = params["account_level"].to_sym
+    end
+
+    if not [:free, :cheapo, :standard, :deluxe].include?(account_level)
+        @errors << "invalid account level"
+    end
+
+    if not @errors.empty?
+        return haml :signup
     end
 
     @user = User.create({
@@ -87,6 +92,7 @@ post '/signup/?' do
         :password => params["password1"],
         :full_name => params["full_name"],
         :account_level => account_level,
+        :monthly_rate => User.get_monthly_rate_by_account_level(account_level),
     })
     @user.save
 
@@ -199,6 +205,34 @@ post '/poll/create/?' do
     # TODO: redirect to an openid login screen if they're not already logged in
 
     redirect "/poll/#{poll.id}/"
+end
+
+get '/poll/:poll_id/copy/?' do |poll_id|
+    puts "Copying poll: #{poll_id}"
+
+    poll = Poll.find(poll_id)
+
+    if not (@current_user.id == poll.user_id and @current_user.can_copy_own_polls?)
+        return redirect "/poll/#{poll_id}/"
+    end
+
+    copied_poll = Poll.create({
+        :user_id => @current_user.id,
+        :copied_poll_id => poll.id,
+        :question => poll.question,
+        :answers => poll.answers,
+        :active => true,
+        :created_at => Time.now,
+        :max_votes => @current_user.max_votes_per_poll,
+    })
+    if @current_user.poll_duration
+        copied_poll.expires_at = Time.now + @current_user.poll_duration
+    end
+    copied_poll.save
+
+    puts "Copied poll: #{copied_poll.id}"
+
+    redirect "/poll/#{copied_poll.id}/"
 end
 
 get '/poll/:poll_id/?' do |poll_id|

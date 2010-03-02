@@ -1,3 +1,6 @@
+- if @is_owner and @current_user.can_copy_own_polls?
+    %p
+        %a{ :href => "/poll/#{@poll.id}/copy/" }="copy this poll"
 
 %h2="#{@poll.question}"
 

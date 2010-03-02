@@ -3,6 +3,7 @@ class Poll
     include MongoMapper::Document
 
     key :user_id
+    key :copied_poll_id
     key :question, String
     key :answers, Array
     key :active, Boolean

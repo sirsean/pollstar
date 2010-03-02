@@ -80,5 +80,9 @@ This is based on the user's account level.
         [:deluxe, :standard, :cheapo].include?(@account_level)
     end
 
+    def can_copy_all_polls?
+        [:deluxe, :standard].include?(@account_level)
+    end
+
 end
 

@@ -212,7 +212,7 @@ get '/poll/:poll_id/copy/?' do |poll_id|
 
     poll = Poll.find(poll_id)
 
-    if not (@current_user.id == poll.user_id and @current_user.can_copy_own_polls?)
+    if not ((@current_user.id == poll.user_id and @current_user.can_copy_own_polls?) or @current_user.can_copy_all_polls?)
         return redirect "/poll/#{poll_id}/"
     end
 

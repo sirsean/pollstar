@@ -1,4 +1,4 @@
-- if @is_owner and @current_user.can_copy_own_polls?
+- if (@is_owner and @current_user.can_copy_own_polls?) or @current_user.can_copy_all_polls?
     %p
         %a{ :href => "/poll/#{@poll.id}/copy/" }="copy this poll"
 
@@ -9,7 +9,7 @@
         %em="this poll is expired ... the results may be deleted at any time"
 -else
     - if @poll.active
-        - if not @voted and @votes.count < @poll.max_votes
+        - if not @voted and (not @poll.max_votes or @votes.count < @poll.max_votes)
             %form.vote_form{ :action => "/poll/#{@poll.id}/vote/", :method => "post" }
                 %ul
                     - @poll.answers.each do |answer|

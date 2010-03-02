@@ -29,6 +29,20 @@
         %br
         %input.text_input{ :type => "password", :name => "password2", :tabindex => 5 }
     %p
+        %strong="account level"
+        %br
+        %input#account_level_free{ :type => "radio", :name => "account_level", :value => "free", :checked => true }
+        %label{ :for => "account_level_free" }="free ($0/month)"
+        %br
+        %input#account_level_cheapo{ :type => "radio", :name => "account_level", :value => "cheapo" }
+        %label{ :for => "account_level_cheapo" }="cheapo ($2/month)"
+        %br
+        %input#account_level_standard{ :type => "radio", :name => "account_level", :value => "standard" }
+        %label{ :for => "account_level_standard" }="standard ($5/month)"
+        %br
+        %input#account_level_deluxe{ :type => "radio", :name => "account_level", :value => "deluxe" }
+        %label{ :for => "account_level_deluxe" }="deluxe ($10/month)"
+    %p
         %input{ :type => "submit", :value => "signup" }
         ="or"
         %a{ :href => "/login/" }="login"

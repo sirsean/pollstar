@@ -12,7 +12,7 @@
         %input.answer{ :type => "text", :name => "answers[]", :tabindex => 3 }
     %p
         %input.answer{ :type => "text", :name => "answers[]", :tabindex => 4 }
-    - if @current_user.max_answers_per_poll > 3
+    - if not @current_user.max_answers_per_poll or @current_user.max_answers_per_poll > 3
         %p#add_answer_paragraph
             %a#add_answer_link{ :href => "#" }="add another answer"
     - else

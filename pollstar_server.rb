@@ -75,12 +75,18 @@ post '/signup/?' do
         return haml :signup
     end
 
+    if not params["account_level"]
+        account_level = :free
+    else
+        account_level = params["account_level"].to_sym
+    end
+
     @user = User.create({
         :username => params["username"],
         :email => params["email"],
         :password => params["password1"],
         :full_name => params["full_name"],
-        :account_level => :free,
+        :account_level => account_level,
     })
     @user.save
 
@@ -162,8 +168,10 @@ post '/poll/create/?' do
     if not answers or answers.empty?
         @errors << "a poll needs at least one answer"
     end
-    if answers and answers.count > @current_user.max_answers_per_poll
-        @errors << "you must upgrade your account to use more than #{@current_user.max_answers_per_poll} answers"
+    if @current_user.max_answers_per_poll
+        if answers and answers.count > @current_user.max_answers_per_poll
+            @errors << "you must upgrade your account to use more than #{@current_user.max_answers_per_poll} answers"
+        end
     end
 
     if not @errors.empty?

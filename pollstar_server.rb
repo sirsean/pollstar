@@ -223,6 +223,7 @@ post '/poll/:poll_id/vote/?' do |poll_id|
         vote = Vote.create({
             :user_id => @current_user.id,
             :user_full_name => @current_user.full_name,
+            :username => @current_user.username,
             :poll_id => poll.id,
             :answer_index => answer_index,
         })
@@ -235,12 +236,17 @@ end
 get '/user/:username/?' do |username|
     puts "Viewing user page: #{username}"
     @user = User.get_by_username(username)
-    @polls = Poll.get_by_user_id(@user.id)
-    @is_you = (@user.id == @current_user.id)
-    votes = Vote.get_by_user_id(@user.id)
-    @polls_voted_on = Poll.get_by_ids(votes.map{ |vote| vote.poll_id })
 
-    haml :view_user
+    if @user
+        @polls = Poll.get_by_user_id(@user.id)
+        @is_you = (@user.id == @current_user.id)
+        votes = Vote.get_by_user_id(@user.id)
+        @polls_voted_on = Poll.get_by_ids(votes.map{ |vote| vote.poll_id })
+
+        haml :view_user
+    else
+        "User #{username} not found"
+    end
 end
 
 get '/user/:username/polls/?' do |username|

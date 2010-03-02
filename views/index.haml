@@ -6,6 +6,44 @@
     %li="get rss feeds from people whose polls you want to take, so you can easily come back and take them"
     %li="that's it! pollstar is as simple as that, and as interesting as you make it"
 
+%h3="free"
+
+%ul.features
+    %li="create unlimited polls"
+    %li.unimplemented="polls expire after 3 months"
+    %li.unimplemented="ads will be displayed"
+    %li="results shown as a bar chart"
+    %li="rss feed for your polls"
+    %li.unimplemented="max 3 answer choices per poll"
+    %li.unimplemented="max 50 votes per poll"
+
+%h3="cheapo: $2/month"
+
+%ul.features
+    %li.unimplemented="you will not see ads, but people viewing your polls will"
+    %li="polls never expire"
+    %li.unimplemented="you can copy your polls, to take them again and see changing results over time"
+    %li.unimplemented="invite voters via email"
+    %li="unlimited answer choices per poll"
+    %li.unimplemented="max 200 votes per poll"
+
+%h3="standard: $5/month"
+
+%ul.features
+    %li.unimplemented="nobody viewing your polls will see ads"
+    %li.unimplemented="you can copy any poll"
+    %li.unimplemented="choose whether you want results as a bar chart or pie chart"
+    %li.unimplemented="edit your polls"
+    %li="unlimited votes per poll"
+    %li.unimplemented="your polls can become \"featured\" and show up to everyone in the sidebar"
+
+%h3="deluxe: $10/month"
+
+%ul.features
+    %li.unimplemented="private polls, available only to people you invite"
+    %li.unimplemented="custom invitation text"
+    %li.unimplemented="embed polls on external sites"
+
 - if not @current_user
     %p
         %a{ :href => "/login/" }="login"

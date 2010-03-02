@@ -15,6 +15,7 @@
 - else
     = list_polls(@polls)
 
-%h3="polls you voted on"
+- if not @polls_voted_on.empty?
+    %h3="polls you voted on"
 
-= list_polls(@polls_voted_on)
+    = list_polls(@polls_voted_on)

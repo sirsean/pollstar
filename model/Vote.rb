@@ -4,6 +4,8 @@ class Vote
 
     key :user_id
     key :poll_id
+    key :user_full_name, String
+    key :username, String
     key :answer_index, Integer
 
     def self.has_user_voted_on_poll(user_id, poll_id)

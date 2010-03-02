@@ -80,6 +80,7 @@ post '/signup/?' do
         :email => params["email"],
         :password => params["password1"],
         :full_name => params["full_name"],
+        :account_level => :free,
     })
     @user.save
 
@@ -220,6 +221,10 @@ post '/poll/:poll_id/vote/?' do |poll_id|
     else
         puts "Voting on poll: #{poll_id}"
         poll = Poll.find(poll_id)
+
+        if poll.expired?
+            return redirect "/poll/#{poll_id}/"
+        end
 
         answer_index = params["answer"]
 

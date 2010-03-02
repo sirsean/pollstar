@@ -1,4 +1,11 @@
 
+=begin
+
+The :username is expected to be unique
+
+The :account_level values are expected to be one of [:free, :cheapo, :standard, :deluxe] and will effect the features the user has access to
+
+=end
 class User
     include MongoMapper::Document
 
@@ -6,6 +13,7 @@ class User
     key :email, String
     key :password, String
     key :full_name, String
+    key :account_level
 
     def self.username_exists?(username)
         User.all(:username => username).count > 0
@@ -25,7 +33,15 @@ If this is nil, then the polls will never expire.
 This is based on the user's account level.
 =end
     def poll_duration
-        3.months
+        begin
+            if @account_level == :free
+                3.months
+            else
+                nil # any paid account has no expiration date on its polls
+            end
+        rescue
+            3.months #they don't have an account level, so we're calling them a free account
+        end
     end
 
 end

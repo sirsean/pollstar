@@ -397,8 +397,8 @@ get '/user/:username/polls/feed/?' do |username|
         xml.instruct! :xml, :version => '1.0'
         xml.rss :version => "2.0" do
             xml.channel do
-                xml.title "[pollstar] #{@user.username}"
-                xml.description "Polls by #{@user.full_name}"
+                xml.title "[poll4.me] #{@user.username}"
+                xml.description "polls by #{@user.full_name}"
                 xml.link "http://poll4.me/user/#{@user.username}/"
 
                 @polls.each do |poll|

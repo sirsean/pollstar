@@ -246,6 +246,8 @@ get '/poll/:poll_id/?' do |poll_id|
     @voted = Vote.has_user_voted_on_poll(@current_user.id, @poll.id)
     @votes = Vote.get_by_poll_id(@poll.id)
     @is_owner = (@poll.user_id == @current_user.id)
+    @can_copy = (@is_owner and @current_user.can_copy_own_polls?) or @current_user.can_copy_all_polls?
+    @can_edit = ((@is_owner and @current_user.can_edit_own_polls?) and (@votes.count == 0))
 
     # calculate the number of votes on each answer
     @answer_votes = @poll.answers.map{ |answer| 
@@ -258,6 +260,76 @@ get '/poll/:poll_id/?' do |poll_id|
     }
 
     haml :view_poll
+end
+
+get '/poll/:poll_id/edit/?' do |poll_id|
+    puts "Editing poll: #{poll_id}"
+
+    if not @current_user
+        session["redirect_url"] = request.fullpath
+        return redirect "/login/"
+    end
+
+    @poll = Poll.find(poll_id)
+
+    if @poll.user_id != @current_user.id
+        return redirect "/poll/#{poll_id}/"
+    end
+
+    @question = @poll.question
+    @answers = @poll.answers.map{ |answer| answer["text"] }
+
+    haml :edit_poll
+end
+
+post '/poll/:poll_id/edit/?' do |poll_id|
+    puts "Editing poll (post): #{poll_id}"
+
+    if not @current_user
+        session["redirect_url"] = request.fullpath
+        return redirect "/login/"
+    end
+
+    @poll = Poll.find(poll_id)
+
+    if @poll.user_id != @current_user.id
+        return redirect "/poll/#{poll_id}/"
+    end
+
+    if params["answers"]
+        answers = params["answers"].map{ |answer| answer.chomp }.select{ |answer| !answer.empty? }
+    end
+
+    # validate inputs
+    @errors = []
+    if not params["question"] or params["question"].empty?
+        @errors << "question is required"
+    end
+    if not answers or answers.empty?
+        @errors << "a poll needs at least one answer"
+    end
+    if @current_user.max_answers_per_poll
+        if answers and answers.count > @current_user.max_answers_per_poll
+            @errors << "you must upgrade your account to use more than #{@current_user.max_answers_per_poll} answers"
+        end
+    end
+
+    if not @errors.empty?
+        @question = params["question"]
+        @answers = answers
+        return haml :edit_poll
+    end
+
+    index = -1 # the index starts at -1 because the first answer will increment it to 0 before using it
+    @poll.question = params["question"]
+    @poll.answers = answers.map{ |answer| { :index => index += 1, :text => answer } }
+    @poll["updated_at"] = Time.now
+    @poll.max_votes = @current_user.max_votes_per_poll
+    @poll.save
+
+    puts "Updated poll: #{@poll.id}"
+
+    redirect "/poll/#{@poll.id}/"
 end
 
 post '/poll/:poll_id/vote/?' do |poll_id|
@@ -327,14 +399,14 @@ get '/user/:username/polls/feed/?' do |username|
             xml.channel do
                 xml.title "[pollstar] #{@user.username}"
                 xml.description "Polls by #{@user.full_name}"
-                xml.link "http://pollstar.com/user/#{@user.username}/"
+                xml.link "http://poll4.me/user/#{@user.username}/"
 
                 @polls.each do |poll|
                     xml.item do
                         xml.title poll.question
-                        xml.link "http://pollstar.com/poll/#{poll.id}/"
+                        xml.link "http://poll4.me/poll/#{poll.id}/"
                         xml.pubDate Time.parse(poll.created_at.to_s).rfc822()
-                        xml.guid "http://pollstar.com/poll/#{poll.id}/"
+                        xml.guid "http://poll4.me/poll/#{poll.id}/"
                     end
                 end
             end

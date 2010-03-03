@@ -6,12 +6,13 @@
 
     %h2="and then enter some possible answers..."
 
-    %p
-        %input.answer{ :type => "text", :name => "answers[]", :tabindex => 2 }
-    %p
-        %input.answer{ :type => "text", :name => "answers[]", :tabindex => 3 }
-    %p
-        %input.answer{ :type => "text", :name => "answers[]", :tabindex => 4 }
+    %ol#answers_list
+        %li
+            %input.answer{ :type => "text", :name => "answers[]", :tabindex => 2 }
+        %li
+            %input.answer{ :type => "text", :name => "answers[]", :tabindex => 3 }
+        %li
+            %input.answer{ :type => "text", :name => "answers[]", :tabindex => 4 }
     - if not @current_user.max_answers_per_poll or @current_user.max_answers_per_poll > 3
         %p#add_answer_paragraph
             %a#add_answer_link{ :href => "#" }="add another answer"
@@ -24,12 +25,6 @@
 
 :javascript
     $(document).ready(function() {
-        var answer_index = 3;
-        var tabindex = 5;
-        $("#add_answer_link").click(function() {
-            $('<p><input id="answer_' + answer_index + '" type="text" class="answer" name="answers[]" tabindex="' + tabindex + '" /></p>').insertBefore("#add_answer_paragraph");
-            $('#answer_' + answer_index).focus();
-            answer_index++;
-            tabindex++;
-        });
+        $("#add_answer_link").click(add_answer_callback(3, 5, "#answers_list"));
     });
+

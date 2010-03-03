@@ -1,15 +1,16 @@
 %html
     %head
-        %title="pollstar"
+        %title="poll4.me"
         %link{ :rel => "stylesheet", :type => "text/css", :href => "/stylesheet.css" }
         %script{ :type => "text/javascript", :src => "http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js" }
         %link{ :rel => "stylesheet", :type => "text/css", :href => "/visualize/visualize.jQuery.css" }
         %script{ :type => "text/javascript", :src => "/visualize/visualize.jQuery.js" }
+        %script{ :type => "text/javascript", :src => "/script/poll4me.js" }
     %body
         #header
             #header_left
                 %h1
-                    %a{ :href => "/" }="pollstar"
+                    %a{ :href => "/" }="poll4.me"
             #header_right
                 - if @current_user
                     %a{:href => "/home/"}="home"

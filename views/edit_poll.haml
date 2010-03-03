@@ -1,0 +1,31 @@
+
+%h2="edit poll"
+
+%p
+    %a{ :href => "/poll/#{@poll.id}/" }="back to poll"
+
+%form.create_form{ :method => "post" }
+    %h3="enter your question..."
+    %textarea{ :name => "question", :cols => "40", :rows => "6", :tabindex => 1 }="#{@question}"
+
+    %h3="and then enter some possible answers..."
+
+    %ol#answers_list
+        - tabindex = 2
+        - @answers.each do |answer|
+            %li
+                %input.answer{ :type => "text", :name => "answers[]", :tabindex => "#{tabindex}", :value => "#{answer}" }
+                - tabindex += 1
+    %p
+        %a#add_answer_link{ :href => "#" }="add another answer"
+
+    %p
+        %input{ :type => "submit", :value => "save" }
+        ="or"
+        %a{ :href => "/poll/#{@poll.id}/" }="cancel"
+
+:javascript
+    $(document).ready(function() {
+        $("#add_answer_link").click(add_answer_callback(#{@answers.count}, #{@answers.count + 2}, "#answers_list"));
+    });
+

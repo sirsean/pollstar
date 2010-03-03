@@ -84,5 +84,9 @@ This is based on the user's account level.
         [:deluxe, :standard].include?(@account_level)
     end
 
+    def can_edit_own_polls?
+        [:deluxe, :standard].include?(@account_level)
+    end
+
 end
 

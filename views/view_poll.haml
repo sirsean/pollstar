@@ -1,6 +1,9 @@
-- if (@is_owner and @current_user.can_copy_own_polls?) or @current_user.can_copy_all_polls?
+- if @can_copy or @can_edit
     %p
-        %a{ :href => "/poll/#{@poll.id}/copy/" }="copy this poll"
+        - if @can_copy
+            %a{ :href => "/poll/#{@poll.id}/copy/" }="copy this poll"
+        - if @can_edit
+            %a{ :href => "/poll/#{@poll.id}/edit/" }="edit this poll"
 
 %h2="#{@poll.question}"
 

@@ -1,5 +1,10 @@
 
-="cheapo plan"
+%h2="select a plan"
+
+%p
+    %a{ :href => "/home/" }="no thanks, i'll just stay with the free plan"
+
+="cheapo plan ($2/month)"
 
 %form{ :action => "#{@cheapo_plan_button["formAction"]}", :method => "post"}
     %input{ :type => "hidden", :name => "immediateReturn", :value => "1" }
@@ -18,7 +23,7 @@
     %input{ :type => "hidden", :name => "abandonUrl", :value => "http://poll4.me/abandon/" }
     %input{ :type => "image", :src => "http://g-ecx.images-amazon.com/images/G/01/asp/golden_small_subscribe_withlogo_whitebg.gif", :border => "0" }
 
-="standard plan"
+="standard plan ($5/month)"
 
 %form{ :action => "#{@standard_plan_button["formAction"]}", :method => "post"}
     %input{ :type => "hidden", :name => "immediateReturn", :value => "1" }
@@ -37,7 +42,7 @@
     %input{ :type => "hidden", :name => "abandonUrl", :value => "http://poll4.me/abandon/" }
     %input{ :type => "image", :src => "http://g-ecx.images-amazon.com/images/G/01/asp/golden_small_subscribe_withlogo_whitebg.gif", :border => "0" }
 
-="deluxe plan"
+="deluxe plan ($10/month)"
 
 %form{ :action => "#{@deluxe_plan_button["formAction"]}", :method => "post"}
     %input{ :type => "hidden", :name => "immediateReturn", :value => "1" }

@@ -104,6 +104,18 @@ post '/signup/?' do
     redirect redirect_url
 end
 
+get '/confirm/' do
+    "Congratulations! You've successfully paid me!"
+end
+
+get '/abandon/' do
+    "I'm sorry you didn't want to pay. You can continue with the free plan."
+end
+
+get '/cancel/' do
+    "I'm sorry you didn't find the service valuable enough. If you have feedback we can use to make poll4.me better, I'd love to hear about it! Meanwhile, you can continue with the free plan."
+end
+
 get '/login/?' do
     if @current_user
         redirect "/home/"

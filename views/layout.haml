@@ -23,6 +23,8 @@
         .clear
         #outer_container
             #main_container
+                - if @flash
+                    #flash="#{@flash}"
                 - if @errors and @errors.length > 0
                     %ul.errors
                         - @errors.each do |error|

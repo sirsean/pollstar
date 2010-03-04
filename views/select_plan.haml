@@ -1,0 +1,58 @@
+
+="cheapo plan"
+
+%form{ :action => "#{@cheapo_plan_button["formAction"]}", :method => "post"}
+    %input{ :type => "hidden", :name => "immediateReturn", :value => "1" }
+    %input{ :type => "hidden", :name => "collectShippingAddress", :value => "0" }
+    %input{ :type => "hidden", :name => "signatureVersion", :value => "#{@cheapo_plan_button["signatureVersion"]}" }
+    %input{ :type => "hidden", :name => "signatureMethod", :value => "#{@cheapo_plan_button["signatureMethod"]}" }
+    %input{ :type => "hidden", :name => "accessKey", :value => "#{@cheapo_plan_button["accessKey"]}" }
+    %input{ :type => "hidden", :name => "recurringFrequency", :value => "#{@cheapo_plan_button["recurringFrequency"]}" }
+    %input{ :type => "hidden", :name => "amount", :value => "#{@cheapo_plan_button["amount"]}" }
+    %input{ :type => "hidden", :name => "signature", :value => "#{@cheapo_plan_button["signature"]}" }
+    %input{ :type => "hidden", :name => "description", :value => "#{@cheapo_plan_button["description"]}" }
+    %input{ :type => "hidden", :name => "amazonPaymentsAccountId", :value => "#{@cheapo_plan_button["amazonPaymentsAccountId"]}" }
+    %input{ :type => "hidden", :name => "returnUrl", :value => "http://poll4.me/confirm/" }
+    %input{ :type => "hidden", :name => "processImmediate", :value => "0" }
+    %input{ :type => "hidden", :name => "cobrandingStyle", :value => "logo" }
+    %input{ :type => "hidden", :name => "abandonUrl", :value => "http://poll4.me/abandon/" }
+    %input{ :type => "image", :src => "http://g-ecx.images-amazon.com/images/G/01/asp/golden_small_subscribe_withlogo_whitebg.gif", :border => "0" }
+
+="standard plan"
+
+%form{ :action => "#{@standard_plan_button["formAction"]}", :method => "post"}
+    %input{ :type => "hidden", :name => "immediateReturn", :value => "1" }
+    %input{ :type => "hidden", :name => "collectShippingAddress", :value => "0" }
+    %input{ :type => "hidden", :name => "signatureVersion", :value => "#{@standard_plan_button["signatureVersion"]}" }
+    %input{ :type => "hidden", :name => "signatureMethod", :value => "#{@standard_plan_button["signatureMethod"]}" }
+    %input{ :type => "hidden", :name => "accessKey", :value => "#{@standard_plan_button["accessKey"]}" }
+    %input{ :type => "hidden", :name => "recurringFrequency", :value => "#{@standard_plan_button["recurringFrequency"]}" }
+    %input{ :type => "hidden", :name => "amount", :value => "#{@standard_plan_button["amount"]}" }
+    %input{ :type => "hidden", :name => "signature", :value => "#{@standard_plan_button["signature"]}" }
+    %input{ :type => "hidden", :name => "description", :value => "#{@standard_plan_button["description"]}" }
+    %input{ :type => "hidden", :name => "amazonPaymentsAccountId", :value => "#{@standard_plan_button["amazonPaymentsAccountId"]}" }
+    %input{ :type => "hidden", :name => "returnUrl", :value => "http://poll4.me/confirm/" }
+    %input{ :type => "hidden", :name => "processImmediate", :value => "0" }
+    %input{ :type => "hidden", :name => "cobrandingStyle", :value => "logo" }
+    %input{ :type => "hidden", :name => "abandonUrl", :value => "http://poll4.me/abandon/" }
+    %input{ :type => "image", :src => "http://g-ecx.images-amazon.com/images/G/01/asp/golden_small_subscribe_withlogo_whitebg.gif", :border => "0" }
+
+="deluxe plan"
+
+%form{ :action => "#{@deluxe_plan_button["formAction"]}", :method => "post"}
+    %input{ :type => "hidden", :name => "immediateReturn", :value => "1" }
+    %input{ :type => "hidden", :name => "collectShippingAddress", :value => "0" }
+    %input{ :type => "hidden", :name => "signatureVersion", :value => "#{@deluxe_plan_button["signatureVersion"]}" }
+    %input{ :type => "hidden", :name => "signatureMethod", :value => "#{@deluxe_plan_button["signatureMethod"]}" }
+    %input{ :type => "hidden", :name => "accessKey", :value => "#{@deluxe_plan_button["accessKey"]}" }
+    %input{ :type => "hidden", :name => "recurringFrequency", :value => "#{@deluxe_plan_button["recurringFrequency"]}" }
+    %input{ :type => "hidden", :name => "amount", :value => "#{@deluxe_plan_button["amount"]}" }
+    %input{ :type => "hidden", :name => "signature", :value => "#{@deluxe_plan_button["signature"]}" }
+    %input{ :type => "hidden", :name => "description", :value => "#{@deluxe_plan_button["description"]}" }
+    %input{ :type => "hidden", :name => "amazonPaymentsAccountId", :value => "#{@deluxe_plan_button["amazonPaymentsAccountId"]}" }
+    %input{ :type => "hidden", :name => "returnUrl", :value => "http://poll4.me/confirm/" }
+    %input{ :type => "hidden", :name => "processImmediate", :value => "0" }
+    %input{ :type => "hidden", :name => "cobrandingStyle", :value => "logo" }
+    %input{ :type => "hidden", :name => "abandonUrl", :value => "http://poll4.me/abandon/" }
+    %input{ :type => "image", :src => "http://g-ecx.images-amazon.com/images/G/01/asp/golden_small_subscribe_withlogo_whitebg.gif", :border => "0" }
+

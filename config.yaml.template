@@ -3,3 +3,70 @@ site_hostname: "poll4.me"
 
 db_hostname: "localhost"
 db_name: "pollstar"
+
+cheapo_plan_button:
+    formAction: "https://authorize.payments.amazon.com/pba/paypipeline"
+    signatureVersion: "2"
+    signatureMethod: "HmacSHA256"
+    accessKey: "11SEM03K88SD016FS1G2"
+    recurringFrequency: "1 month"
+    amount: "USD 2"
+    signature: "???"
+    description: "poll4.me Cheapo Plan"
+    amazonPaymentsAccountId: "???"
+
+standard_plan_button:
+    formAction: "https://authorize.payments.amazon.com/pba/paypipeline"
+    signatureVersion: "2"
+    signatureMethod: "HmacSHA256"
+    accessKey: "???"
+    recurringFrequency: "1 month"
+    amount: "USD 5"
+    signature: "???"
+    description: "poll4.me Standard Plan"
+    amazonPaymentsAccountId: "???"
+
+deluxe_plan_button:
+    formAction: "https://authorize.payments.amazon.com/pba/paypipeline"
+    signatureVersion: "2"
+    signatureMethod: "HmacSHA256"
+    accessKey: "???"
+    recurringFrequency: "1 month"
+    amount: "USD 10"
+    signature: "???"
+    description: "poll4.me Deluxe Plan"
+    amazonPaymentsAccountId: "???"
+
+cheapo_plan_button_sandbox:
+    formAction: "https://authorize.payments-sandbox.amazon.com/pba/paypipeline"
+    signatureVersion: "2"
+    signatureMethod: "HmacSHA256"
+    accessKey: "???"
+    recurringFrequency: "1 month"
+    amount: "USD 2"
+    signature: "???"
+    description: "poll4.me Cheapo Plan"
+    amazonPaymentsAccountId: "???"
+
+standard_plan_button_sandbox:
+    formAction: "https://authorize.payments-sandbox.amazon.com/pba/paypipeline"
+    signatureVersion: "2"
+    signatureMethod: "HmacSHA256"
+    accessKey: "???"
+    recurringFrequency: "1 month"
+    amount: "USD 5"
+    signature: "???"
+    description: "poll4.me Standard Plan"
+    amazonPaymentsAccountId: "???"
+
+deluxe_plan_button_sandbox:
+    formAction: "https://authorize.payments-sandbox.amazon.com/pba/paypipeline"
+    signatureVersion: "2"
+    signatureMethod: "HmacSHA256"
+    accessKey: "???"
+    recurringFrequency: "1 month"
+    amount: "USD 10"
+    signature: "???"
+    description: "poll4.me Deluxe Plan"
+    amazonPaymentsAccountId: "???"
+

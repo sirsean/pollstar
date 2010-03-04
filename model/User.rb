@@ -88,5 +88,9 @@ This is based on the user's account level.
         [:deluxe, :standard].include?(@account_level)
     end
 
+    def can_choose_chart_type?
+        [:deluxe, :standard].include?(@account_level)
+    end
+
 end
 

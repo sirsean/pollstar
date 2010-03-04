@@ -14,7 +14,7 @@
     - if @poll.active
         - if not @voted and (not @poll.max_votes or @votes.count < @poll.max_votes)
             %form.vote_form{ :action => "/poll/#{@poll.id}/vote/", :method => "post" }
-                %ul
+                %ol
                     - @poll.answers.each do |answer|
                         %li
                             %input{ :type => "radio", :id => "answer_#{answer["index"]}", :name => "answer", :value => answer["index"] }
@@ -22,14 +22,14 @@
 
                 %input{ :type => "submit", :value => "vote" }
         - else
-            %ul.answer_list
+            %ol.answer_list
                 - @answer_votes.each do |answer|
                     %li
                         %span="#{answer["text"]}"
                         %strong="#{answer["num_votes"]}"
     - else
         %em="This poll is inactive"
-        %ul.answer_list
+        %ol.answer_list
             - @poll.answers.each do |answer|
                 %li="#{answer}"
 
@@ -62,5 +62,5 @@
 
 :javascript
     $(document).ready(function() {
-        $('#results_chart').visualize({ width: "560px", height: "400px" });
+        $('#results_chart').visualize({ type: "#{@poll["chart_type"] or "bar"}", width: "560px", height: "400px" });
     });

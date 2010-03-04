@@ -8,8 +8,10 @@ class Poll
     key :answers, Array
     key :active, Boolean
     key :created_at, Time
+    key :updated_at, Time
     key :expires_at, Time
     key :max_votes, Integer
+    key :chart_type
 
     def self.get_by_ids(poll_ids)
         Poll.all(:_id => { "$in" => poll_ids }, :order => 'created_at desc')

@@ -19,6 +19,14 @@
     %p
         %a#add_answer_link{ :href => "#" }="add another answer"
 
+    - if @current_user.can_choose_chart_type?
+        .choose_chart_type
+            %h3="how do you want to display the results?"
+            %input#bar_chart{ :type => "radio", :name => "chart_type", :value => "bar", :checked => (:bar == @poll["chart_type"]) }
+            %label{ :for => "bar_chart" }="bar chart"
+            %br
+            %input#pie_chart{ :type => "radio", :name => "chart_type", :value => "pie", :checked => (:pie == @poll["chart_type"]) }
+            %label{ :for => "pie_chart" }="pie chart"
     %p
         %input{ :type => "submit", :value => "save" }
         ="or"

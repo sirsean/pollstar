@@ -179,6 +179,17 @@ post '/poll/create/?' do
             @errors << "you must upgrade your account to use more than #{@current_user.max_answers_per_poll} answers"
         end
     end
+    if params["chart_type"]
+        chart_type = params["chart_type"].to_sym
+    else
+        chart_type = :bar
+    end
+    if not [:bar, :pie].include?(chart_type)
+        chart_type = :bar
+    end
+    if chart_type == :pie and not @current_user.can_choose_chart_type?
+        chart_type = :bar
+    end
 
     if not @errors.empty?
         @question = params["question"]
@@ -194,6 +205,7 @@ post '/poll/create/?' do
         :active => true,
         :created_at => Time.now,
         :max_votes => @current_user.max_votes_per_poll,
+        :chart_type => chart_type,
     })
     if @current_user.poll_duration
         poll.expires_at = Time.now + @current_user.poll_duration
@@ -224,6 +236,7 @@ get '/poll/:poll_id/copy/?' do |poll_id|
         :active => true,
         :created_at => Time.now,
         :max_votes => @current_user.max_votes_per_poll,
+        :chart_type => poll["chart_type"],
     })
     if @current_user.poll_duration
         copied_poll.expires_at = Time.now + @current_user.poll_duration
@@ -313,6 +326,17 @@ post '/poll/:poll_id/edit/?' do |poll_id|
             @errors << "you must upgrade your account to use more than #{@current_user.max_answers_per_poll} answers"
         end
     end
+    if params["chart_type"]
+        chart_type = params["chart_type"].to_sym
+    else
+        chart_type = :bar
+    end
+    if not [:bar, :pie].include?(chart_type)
+        chart_type = :bar
+    end
+    if chart_type == :pie and not @current_user.can_choose_chart_type?
+        chart_type = :bar
+    end
 
     if not @errors.empty?
         @question = params["question"]
@@ -325,6 +349,7 @@ post '/poll/:poll_id/edit/?' do |poll_id|
     @poll.answers = answers.map{ |answer| { :index => index += 1, :text => answer } }
     @poll["updated_at"] = Time.now
     @poll.max_votes = @current_user.max_votes_per_poll
+    @poll["chart_type"] = chart_type
     @poll.save
 
     puts "Updated poll: #{@poll.id}"

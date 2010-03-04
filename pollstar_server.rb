@@ -16,6 +16,9 @@ config = YAML::load(File.open('config.yaml'))
 # connect to the database
 MongoMapper.connection = Mongo::Connection.new(config['db_hostname'])
 MongoMapper.database = config['db_name']
+if config['db_username']
+    MongoMapper.connection[config['db_name']].authenticate(config['db_username'], config['db_password'])
+end
 
 before do
     if session["user_id"]

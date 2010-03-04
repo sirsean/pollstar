@@ -1,0 +1,5 @@
+site_name: "poll4.me"
+site_hostname: "poll4.me"
+
+db_hostname: "localhost"
+db_name: "pollstar"

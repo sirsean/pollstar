@@ -10,9 +10,12 @@ require 'model/Vote'
 
 enable :sessions
 
+# load the configuration
+config = YAML::load(File.open('config.yaml'))
+
 # connect to the database
-MongoMapper.connection = Mongo::Connection.new('localhost')
-MongoMapper.database = 'pollstar'
+MongoMapper.connection = Mongo::Connection.new(config['db_hostname'])
+MongoMapper.database = config['db_name']
 
 before do
     if session["user_id"]
@@ -422,16 +425,16 @@ get '/user/:username/polls/feed/?' do |username|
         xml.instruct! :xml, :version => '1.0'
         xml.rss :version => "2.0" do
             xml.channel do
-                xml.title "[poll4.me] #{@user.username}"
+                xml.title "[#{config["site_name"]}] #{@user.username}"
                 xml.description "polls by #{@user.full_name}"
-                xml.link "http://poll4.me/user/#{@user.username}/"
+                xml.link "http://#{config["site_hostname"]}/user/#{@user.username}/"
 
                 @polls.each do |poll|
                     xml.item do
                         xml.title poll.question
-                        xml.link "http://poll4.me/poll/#{poll.id}/"
+                        xml.link "http://#{config["site_hostname"]}/poll/#{poll.id}/"
                         xml.pubDate Time.parse(poll.created_at.to_s).rfc822()
-                        xml.guid "http://poll4.me/poll/#{poll.id}/"
+                        xml.guid "http://#{config["site_hostname"]}/poll/#{poll.id}/"
                     end
                 end
             end

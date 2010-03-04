@@ -105,6 +105,20 @@ get '/select_plan/?' do
     haml :select_plan
 end
 
+get '/select_free_plan/?' do
+    puts "Selecting free plan"
+
+    puts "#{Time.now}: User #{@current_user.id} switched from #{@current_user.account_level} to free"
+
+    @current_user.account_level = :free
+    @current_user.monthly_rate = 0
+    @current_user.save
+
+    session["flash"] = "You're on the free plan now"
+    redirect_url = (session.delete("redirect_url") or "/home/")
+    redirect redirect_url
+end
+
 get '/confirm/?' do
     puts "Payment confirmation"
     puts @env["rack.request.query_hash"].inspect
@@ -119,6 +133,8 @@ get '/confirm/?' do
         when "poll4.me Deluxe Plan"
             account_level = :deluxe
     end
+    
+    puts "#{Time.now}: User #{@current_user.id} switched from #{@current_user.account_level} to #{account_level}"
 
     @current_user.account_level = account_level
     @current_user.monthly_rate = User.get_monthly_rate_by_account_level(account_level)

@@ -535,5 +535,10 @@ helpers do
         @ad_name = ad_name
         haml :partial_show_ad, :layout => false
     end
+
+    def time_until(date)
+        days = ((date - Time.now) / 86400).floor
+        "#{days} days"
+    end
 end
 

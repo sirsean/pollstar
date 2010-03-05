@@ -1,3 +1,12 @@
+%p
+    ="a poll by"
+    %a{ :href => "/user/#{@owner.username}/" }="#{@owner.full_name}"
+
+- if @poll.expires_at
+    %p
+        ="this poll expires in"
+        = time_until(@poll.expires_at)
+
 - if @can_copy or @can_edit
     %p
         - if @can_copy

@@ -36,10 +36,11 @@ before do
         }
 
         @show_ads = @current_user.show_me_ads?
-        @pogads = config["pogads"]
     else
         puts "Unauthenticated request from #{@env["REMOTE_ADDR"]}"
+        @show_ads = true
     end
+    @pogads = config["pogads"]
 end
 
 get '/stylesheet.css' do
@@ -327,23 +328,23 @@ get '/poll/:poll_id/?' do |poll_id|
     @poll = Poll.find(poll_id)
     puts @poll.inspect
 
-    # determine if the user is logged in (if they're not logged in, they can't vote, right?)
-
-    @voted = Vote.has_user_voted_on_poll(@current_user.id, @poll.id)
+    if @current_user
+        @voted = Vote.has_user_voted_on_poll(@current_user.id, @poll.id)
+    else
+        @voted = false
+    end
     @votes = Vote.get_by_poll_id(@poll.id)
     @owner = User.find(@poll.user_id)
-    @is_owner = (@poll.user_id == @current_user.id)
-    @can_copy = (@is_owner and @current_user.can_copy_own_polls?) or @current_user.can_copy_all_polls?
-    @can_edit = ((@is_owner and @current_user.can_edit_own_polls?) and (@votes.count == 0))
+    @is_owner = (@current_user and (@poll.user_id == @current_user.id))
+    @can_copy = (@current_user and ((@is_owner and @current_user.can_copy_own_polls?) or @current_user.can_copy_all_polls?))
+    @can_edit = (@current_user and (@is_owner and @current_user.can_edit_own_polls?) and (@votes.count == 0))
     @show_ads = (@show_ads and @owner.show_ads_on_my_polls?)
     puts "Show ads: #{@show_ads}"
-    puts "Show ads on this user's polls: #{@owner.show_ads_on_my_polls?}"
 
     # calculate the number of votes on each answer
     @answer_votes = @poll.answers.map{ |answer| 
         { "text" => answer["text"], 
             "num_votes" => @votes.select{ |vote| 
-                puts "vote: #{vote["answer_index"]}, answer: #{answer["index"]}"
                 vote["answer_index"] == answer["index"] 
             }.length 
         }

@@ -46,6 +46,8 @@
                             %th="#{answer["text"]}"
                             %td="#{answer["num_votes"]}"
 
+    = show_ad("bottom_banner")
+
     - if @is_owner
         .people_who_voted
             %h3="people who voted"

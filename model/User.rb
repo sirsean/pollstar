@@ -92,5 +92,13 @@ This is based on the user's account level.
         [:deluxe, :standard].include?(@account_level)
     end
 
+    def show_me_ads?
+        [:free].include?(@account_level)
+    end
+
+    def show_ads_on_my_polls?
+        [:free, :cheapo].include?(@account_level)
+    end
+
 end
 

@@ -34,6 +34,9 @@ before do
             "account_level" => @current_user.account_level,
             "recent_polls" => Poll.get_latest_by_user_id(@current_user.id, 4),
         }
+
+        @show_ads = @current_user.show_me_ads?
+        @pogads = config["pogads"]
     else
         puts "Unauthenticated request from #{@env["REMOTE_ADDR"]}"
     end
@@ -328,9 +331,13 @@ get '/poll/:poll_id/?' do |poll_id|
 
     @voted = Vote.has_user_voted_on_poll(@current_user.id, @poll.id)
     @votes = Vote.get_by_poll_id(@poll.id)
+    @owner = User.find(@poll.user_id)
     @is_owner = (@poll.user_id == @current_user.id)
     @can_copy = (@is_owner and @current_user.can_copy_own_polls?) or @current_user.can_copy_all_polls?
     @can_edit = ((@is_owner and @current_user.can_edit_own_polls?) and (@votes.count == 0))
+    @show_ads = (@show_ads and @owner.show_ads_on_my_polls?)
+    puts "Show ads: #{@show_ads}"
+    puts "Show ads on this user's polls: #{@owner.show_ads_on_my_polls?}"
 
     # calculate the number of votes on each answer
     @answer_votes = @poll.answers.map{ |answer| 
@@ -509,10 +516,20 @@ get '/user/:username/polls/feed/?' do |username|
     end
 end
 
+get '/ad/:ad_name/?' do |ad_name|
+    @ad_name = ad_name
+    haml :ad, :layout => false
+end
+
 helpers do
     def list_polls(polls)
         @polls = polls
         haml :partial_list_polls, :layout => false
+    end
+
+    def show_ad(ad_name)
+        @ad_name = ad_name
+        haml :partial_show_ad, :layout => false
     end
 end
 

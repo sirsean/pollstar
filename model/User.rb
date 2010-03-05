@@ -9,7 +9,7 @@ The :account_level values are expected to be one of [:free, :cheapo, :standard, 
 class User
     include MongoMapper::Document
 
-    key :username, String
+    key :username, String, :index => true
     key :email, String
     key :password, String
     key :full_name, String

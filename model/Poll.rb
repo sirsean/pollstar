@@ -2,11 +2,11 @@
 class Poll
     include MongoMapper::Document
 
-    key :user_id
+    key :user_id, :index => true
     key :copied_poll_id
     key :question, String
     key :answers, Array
-    key :active, Boolean
+    key :active, Boolean, :index => true
     key :created_at, Time
     key :updated_at, Time
     key :expires_at, Time

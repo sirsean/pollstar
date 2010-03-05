@@ -2,8 +2,8 @@
 class Vote
     include MongoMapper::Document
 
-    key :user_id
-    key :poll_id
+    key :user_id, :index => true
+    key :poll_id, :index => true
     key :user_full_name, String
     key :username, String
     key :answer_index, Integer

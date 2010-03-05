@@ -8,6 +8,9 @@
 - if not @polls.empty?
     %h3
         %a{ :href => "/user/#{@user.username}/polls/" }="polls"
+        ="("
+        %a{ :href => "/user/#{@user.username}/polls/feed/" }="rss"
+        =")"
     = list_polls(@polls)
 
 - if not @polls_voted_on.empty?

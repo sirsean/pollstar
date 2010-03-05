@@ -4,9 +4,6 @@ require 'haml'
 require 'sass'
 require 'mongo'
 require 'mongo_mapper'
-require 'model/User'
-require 'model/Poll'
-require 'model/Vote'
 
 enable :sessions
 
@@ -19,6 +16,10 @@ MongoMapper.database = config['db_name']
 if config['db_username']
     MongoMapper.connection[config['db_name']].authenticate(config['db_username'], config['db_password'])
 end
+
+require 'model/User'
+require 'model/Poll'
+require 'model/Vote'
 
 before do
     if session["user_id"]
@@ -476,6 +477,7 @@ get '/user/:username/?' do |username|
         @is_you = (@user.id == @current_user.id)
         votes = Vote.get_by_user_id(@user.id)
         @polls_voted_on = Poll.get_by_ids(votes.map{ |vote| vote.poll_id })
+        @show_ads = (@show_ads and @user.show_ads_on_my_polls?)
 
         haml :view_user
     else
@@ -487,6 +489,7 @@ get '/user/:username/polls/?' do |username|
     puts "Viewing user polls: #{username}"
     @user = User.get_by_username(username)
     @polls = Poll.get_by_user_id(@user.id)
+    @show_ads = (@show_ads and @user.show_ads_on_my_polls?)
 
     haml :polls
 end

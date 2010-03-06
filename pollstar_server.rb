@@ -349,13 +349,7 @@ get '/poll/:poll_id/?' do |poll_id|
     puts "Show ads: #{@show_ads}"
 
     # calculate the number of votes on each answer
-    @answer_votes = @poll.answers.map{ |answer| 
-        { "text" => answer["text"], 
-            "num_votes" => @votes.select{ |vote| 
-                vote["answer_index"] == answer["index"] 
-            }.length 
-        }
-    }
+    @answer_votes = @poll.calculate_answer_votes(@votes)
 
     haml :view_poll
 end
@@ -403,13 +397,7 @@ get '/poll/:poll_id/embed/' do |poll_id|
     @votes = Vote.get_by_poll_id(@poll.id)
 
     # calculate the number of votes on each answer
-    @answer_votes = @poll.answers.map{ |answer| 
-        { "text" => answer["text"], 
-            "num_votes" => @votes.select{ |vote| 
-                vote["answer_index"] == answer["index"] 
-            }.length 
-        }
-    }
+    @answer_votes = @poll.calculate_answer_votes
 
     haml :embed, :layout => false
 end

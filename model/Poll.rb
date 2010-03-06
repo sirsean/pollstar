@@ -33,4 +33,14 @@ class Poll
         end
     end
 
+    def calculate_answer_votes(votes)
+        @answers.map{ |answer| 
+            { "text" => answer["text"], 
+                "num_votes" => votes.select{ |vote| 
+                    vote["answer_index"] == answer["index"] 
+                }.length 
+            }
+        }
+    end
+
 end

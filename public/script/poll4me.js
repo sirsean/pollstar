@@ -10,7 +10,7 @@
 function add_answer_callback(answer_index, tabindex, append_to) {
     return function() {
         var li = $(append_to + ' li:first-child').clone(true); 
-        li.find('input').attr('id', 'answer_' + answer_index).attr('tabindex', tabindex);
+        li.find('input').attr('id', 'answer_' + answer_index).attr('tabindex', tabindex).attr('value', '');
         li.appendTo(append_to);
         $('#answer_' + answer_index).focus();
         answer_index++;

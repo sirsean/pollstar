@@ -1,0 +1,35 @@
+%link{ :rel => "stylesheet", :type => "text/css", :href => "/stylesheet.css" }
+%script{ :type => "text/javascript", :src => "http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js" }
+%link{ :rel => "stylesheet", :type => "text/css", :href => "/visualize/visualize.jQuery.css" }
+%script{ :type => "text/javascript", :src => "/visualize/visualize.jQuery.js" }
+
+.embedded_poll{ :style => "width: #{@width}px" }
+    %h2="#{@poll.question}"
+
+    - if not @voted
+        %form.vote_form{ :action => "/poll/#{@poll.id}/vote/", :method => "post" }
+            %input{ :type => "hidden", :name => "embed", :value => "1" }
+            %ol
+                - @poll.answers.each do |answer|
+                    %li
+                        %input{ :type => "radio", :id => "answer_#{answer["index"]}", :name => "answer", :value => answer["index"] }
+                        %label{ :for => "answer_#{answer["index"]}" }="#{answer["text"]}"
+
+            %input{ :type => "submit", :value => "vote" }
+    - else
+        #results_container
+            %table#results_chart
+                %thead
+                    %tr
+                        %td=""
+                        %th="votes"
+                %tbody
+                    - @answer_votes.each do |answer|
+                        %tr
+                            %th="#{answer["text"]}"
+                            %td="#{answer["num_votes"]}"
+
+:javascript
+    $(document).ready(function() {
+        $('#results_chart').visualize({ type: "#{@poll["chart_type"] or "bar"}", width: "#{@width-10}px", height: "#{@height-120}px" });
+    });

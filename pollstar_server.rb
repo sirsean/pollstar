@@ -22,8 +22,9 @@ require 'model/Poll'
 require 'model/Vote'
 
 before do
+    @ip = @env["REMOTE_ADDR"]
     if session["user_id"]
-        puts "Authenticated session from #{@env["REMOTE_ADDR"]}: #{session["user_id"]}"
+        puts "Authenticated session from #{@ip}: #{session["user_id"]}"
         @current_user = User.find(session["user_id"])
 
         @flash = session.delete("flash")
@@ -42,6 +43,8 @@ before do
         @show_ads = true
     end
     @pogads = config["pogads"]
+
+    @site_hostname = config["site_hostname"]
 end
 
 get '/stylesheet.css' do
@@ -330,9 +333,12 @@ get '/poll/:poll_id/?' do |poll_id|
     puts @poll.inspect
 
     if @current_user
-        @voted = Vote.has_user_voted_on_poll(@current_user.id, @poll.id)
+        @voted = Vote.has_user_voted_on_poll?(@current_user.id, @poll.id)
     else
-        @voted = false
+        @voted = Vote.has_ip_voted_on_poll?(@ip, @poll.id)
+        puts "ip: #{@ip}"
+        puts "poll_id: #{@poll.id}"
+        puts "voted: #{@voted}"
     end
     @votes = Vote.get_by_poll_id(@poll.id)
     @owner = User.find(@poll.user_id)
@@ -352,6 +358,60 @@ get '/poll/:poll_id/?' do |poll_id|
     }
 
     haml :view_poll
+end
+
+get '/poll/:poll_id/embed.js' do |poll_id|
+    puts "Embedding poll (javascript): #{poll_id}"
+    # remember to set the content-type to javascript
+    content_type "text/javascript"
+    @poll_id = poll_id
+    if @env["rack.request.query_hash"]["width"]
+        @width = @env["rack.request.query_hash"]["width"].to_i
+    else
+        @width = 570
+    end
+    if @env["rack.request.query_hash"]["height"]
+        @height = @env["rack.request.query_hash"]["height"].to_i
+    else
+        @height = 520
+    end
+    puts "width: #{@width}, height: #{@height}"
+    haml :embed_js, :layout => false
+end
+
+get '/poll/:poll_id/embed/' do |poll_id|
+    puts "Embedding poll: #{poll_id}"
+    if @env["rack.request.query_hash"]["width"]
+        @width = @env["rack.request.query_hash"]["width"].to_i
+    else
+        @width = 570
+    end
+    if @env["rack.request.query_hash"]["height"]
+        @height = @env["rack.request.query_hash"]["height"].to_i
+    else
+        @height = 520
+    end
+    puts "width: #{@width}, height: #{@height}"
+    @poll = Poll.find(poll_id)
+    if @current_user
+        @voted = Vote.has_user_voted_on_poll?(@current_user.id, @poll.id)
+        puts "logged in user voted: #{@voted}"
+    else
+        @voted = Vote.has_ip_voted_on_poll?(@ip, @poll.id)
+        puts "anonymous user voted: #{@voted}"
+    end
+    @votes = Vote.get_by_poll_id(@poll.id)
+
+    # calculate the number of votes on each answer
+    @answer_votes = @poll.answers.map{ |answer| 
+        { "text" => answer["text"], 
+            "num_votes" => @votes.select{ |vote| 
+                vote["answer_index"] == answer["index"] 
+            }.length 
+        }
+    }
+
+    haml :embed, :layout => false
 end
 
 get '/poll/:poll_id/edit/?' do |poll_id|
@@ -437,35 +497,45 @@ post '/poll/:poll_id/edit/?' do |poll_id|
 end
 
 post '/poll/:poll_id/vote/?' do |poll_id|
-    if not @current_user
-        session["redirect_url"] = request.fullpath.gsub("/vote", "")
-        redirect "/login/"
-    else
-        puts "Voting on poll: #{poll_id}"
-        poll = Poll.find(poll_id)
+    puts "Voting on poll: #{poll_id}"
+    poll = Poll.find(poll_id)
 
-        if poll.expired?
-            return redirect "/poll/#{poll_id}/"
+    def get_redirect(embed, poll_id)
+        if not embed
+            redirect "/poll/#{poll_id}/"
+        else
+            redirect "/poll/#{poll_id}/embed/"
         end
-
-        votes = Vote.get_by_poll_id(poll.id)
-        if poll.max_votes and votes.count >= poll.max_votes
-            return redirect "/poll/#{poll_id}/"
-        end
-
-        answer_index = params["answer"]
-
-        vote = Vote.create({
-            :user_id => @current_user.id,
-            :user_full_name => @current_user.full_name,
-            :username => @current_user.username,
-            :poll_id => poll.id,
-            :answer_index => answer_index,
-        })
-        vote.save
-
-        redirect "/poll/#{poll_id}/"
     end
+
+    if poll.expired?
+        return get_redirect(params["embed"], poll_id)
+    end
+
+    votes = Vote.get_by_poll_id(poll.id)
+    if poll.max_votes and votes.count >= poll.max_votes
+        return get_redirect(params["embed"], poll_id)
+    end
+
+    answer_index = params["answer"]
+
+    if @current_user
+        user_id = @current_user.id
+        user_full_name = @current_user.full_name
+        username = @current_user.username
+    end
+
+    vote = Vote.create({
+        :user_id => user_id,
+        :user_full_name => user_full_name,
+        :username => username,
+        :ip => @ip,
+        :poll_id => poll.id,
+        :answer_index => answer_index,
+    })
+    vote.save
+
+    return get_redirect(params["embed"], poll_id)
 end
 
 get '/user/:username/?' do |username|

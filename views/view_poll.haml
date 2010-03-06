@@ -55,6 +55,13 @@
                             %th="#{answer["text"]}"
                             %td="#{answer["num_votes"]}"
 
+    - if @owner.can_embed_my_polls?
+        ="embed this poll on another website by including this script on your page:"
+        %br
+        %textarea{ :readonly => true, :rows => 4, :cols => 70 }="<script type=\"text/javascript\" src=\"http://#{@site_hostname}/poll/#{@poll.id}/embed.js?width=570&amp;height=520\"></script><noscript><a href=\"http://#{@site_hostname}/poll/#{@poll.id}/\">View the poll.</a></noscript>"
+        %br
+        
+
     = show_ad("bottom_banner")
 
     - if @is_owner
@@ -64,7 +71,7 @@
                 %ul
                 - @votes.each do |vote|
                     %li
-                        - if not vote.username.empty?
+                        - if vote.username and not vote.username.empty?
                             %a{ :href => "/user/#{vote.username}/" }="#{vote.user_full_name}"
                         - else
                             %span="anonymous"

@@ -100,5 +100,9 @@ This is based on the user's account level.
         [:free, :cheapo].include?(@account_level)
     end
 
+    def can_embed_my_polls?
+        [:deluxe].include?(@account_level)
+    end
+
 end
 

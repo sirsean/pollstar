@@ -50,6 +50,16 @@
                 %br
                 %a{ :href => "http://vikinghammer.com/" }="Vikinghammer"
 
+        - if @piwik_url
+            :javascript
+                var pkBaseURL = (("https:" == document.location.protocol) ? "https://#{@piwik_url}/" : "http://#{@piwik_url}/");
+                document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+                try {
+                    var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+                    piwikTracker.trackPageView();
+                    piwikTracker.enableLinkTracking();
+                } catch( err ) {}
+
         :javascript
             $(document).ready(function() {
                 $("form :input:visible:enabled:first").focus();

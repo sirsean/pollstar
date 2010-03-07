@@ -45,6 +45,7 @@ before do
     @pogads = config["pogads"]
 
     @site_hostname = config["site_hostname"]
+    @piwik_url = config["piwik_url"]
 end
 
 get '/stylesheet.css' do

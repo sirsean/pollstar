@@ -6,9 +6,9 @@ get '/select_plan/?' do
 end
 
 get '/select_free_plan/?' do
-    puts "Selecting free plan"
+    @logger.debug "Selecting free plan"
 
-    puts "#{Time.now}: User #{@current_user.id} switched from #{@current_user.account_level} to free"
+    @logger.warn "User #{@current_user.id} switched from #{@current_user.account_level} to free"
 
     @current_user.account_level = :free
     @current_user.monthly_rate = 0
@@ -20,8 +20,8 @@ get '/select_free_plan/?' do
 end
 
 get '/confirm/?' do
-    puts "Payment confirmation"
-    puts @env["rack.request.query_hash"].inspect
+    @logger.debug "Payment confirmation"
+    @logger.debug @env["rack.request.query_hash"].inspect
     reason = @env["rack.request.query_hash"]["paymentReason"]
 
     account_level = :free
@@ -34,7 +34,7 @@ get '/confirm/?' do
             account_level = :deluxe
     end
     
-    puts "#{Time.now}: User #{@current_user.id} switched from #{@current_user.account_level} to #{account_level}"
+    @logger.warn "User #{@current_user.id} switched from #{@current_user.account_level} to #{account_level}"
 
     @current_user.account_level = account_level
     @current_user.monthly_rate = User.get_monthly_rate_by_account_level(account_level)
@@ -48,7 +48,7 @@ get '/confirm/?' do
 end
 
 get '/abandon/' do
-    puts "Abandoning payment"
+    @logger.debug "Abandoning payment"
 
     @current_user.account_level = :free
     @current_user.monthly_rate = 0
@@ -60,7 +60,8 @@ get '/abandon/' do
 end
 
 get '/cancel/' do
-    puts "Cancelling plan"
+    @logger.debug "Cancelling plan"
+    @logger.warn "User #{@current_user.id} cancelled; set from #{@current_user.account_level} to free"
 
     @current_user.account_level = :free
     @current_user.monthly_rate = 0

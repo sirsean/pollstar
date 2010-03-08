@@ -3,8 +3,8 @@ get '/signup/?' do
 end
 
 post '/signup/?' do
-    puts "Registering a new user"
-    puts params.inspect
+    @logger.debug "Registering a new user"
+    @logger.debug params.inspect
 
     @errors = []
     # validate fields
@@ -57,8 +57,8 @@ get '/login/?' do
 end
 
 post '/login/?' do
-    puts "Logging in"
-    puts params.inspect
+    @logger.debug "Logging in"
+    @logger.debug params.inspect
 
     user = User.get_by_username_and_password(params["username"], params["password"])
 
@@ -83,7 +83,7 @@ get '/home/?' do
     if not session["user_id"]
         redirect "/login/"
     else
-        puts "Getting polls for user: #{@current_user.id}"
+        @logger.debug "Getting polls for user: #{@current_user.id}"
         @polls = Poll.get_by_user_id(@current_user.id)
 
         votes = Vote.get_by_user_id(@current_user.id)
@@ -94,7 +94,7 @@ get '/home/?' do
 end
 
 get '/user/:username/?' do |username|
-    puts "Viewing user page: #{username}"
+    @logger.debug "Viewing user page: #{username}"
     @user = User.get_by_username(username)
 
     if @user
@@ -111,7 +111,7 @@ get '/user/:username/?' do |username|
 end
 
 get '/user/:username/polls/?' do |username|
-    puts "Viewing user polls: #{username}"
+    @logger.debug "Viewing user polls: #{username}"
     @user = User.get_by_username(username)
     @polls = Poll.get_by_user_id(@user.id)
     @show_ads = (@show_ads and @user.show_ads_on_my_polls?)

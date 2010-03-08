@@ -11,8 +11,8 @@ post '/poll/create/?' do
         session["redirect_url"] = request.fullpath
         return redirect "/login/"
     end
-    puts "Creating a poll"
-    puts params.inspect
+    @logger.debug "Creating a poll"
+    @logger.debug params.inspect
 
     if params["answers"]
         answers = params["answers"].map{ |answer| answer.chomp }.select{ |answer| !answer.empty? }
@@ -64,7 +64,7 @@ post '/poll/create/?' do
     end
     poll.save
 
-    puts "Created poll: #{poll.id}"
+    @logger.debug "Created poll: #{poll.id}"
 
     # TODO: redirect to an openid login screen if they're not already logged in
 
@@ -72,7 +72,7 @@ post '/poll/create/?' do
 end
 
 get '/poll/:poll_id/copy/?' do |poll_id|
-    puts "Copying poll: #{poll_id}"
+    @logger.debug "Copying poll: #{poll_id}"
 
     poll = Poll.find(poll_id)
 
@@ -95,24 +95,21 @@ get '/poll/:poll_id/copy/?' do |poll_id|
     end
     copied_poll.save
 
-    puts "Copied poll: #{copied_poll.id}"
+    @logger.debug "Copied poll: #{copied_poll.id}"
 
     redirect "/poll/#{copied_poll.id}/"
 end
 
 get '/poll/:poll_id/?' do |poll_id|
-    puts "Viewing poll: #{poll_id}"
+    @logger.debug "Viewing poll: #{poll_id}"
 
     @poll = Poll.find(poll_id)
-    puts @poll.inspect
+    @logger.debug @poll.inspect
 
     if @current_user
         @voted = Vote.has_user_voted_on_poll?(@current_user.id, @poll.id)
     else
         @voted = Vote.has_ip_voted_on_poll?(@ip, @poll.id)
-        puts "ip: #{@ip}"
-        puts "poll_id: #{@poll.id}"
-        puts "voted: #{@voted}"
     end
     @votes = Vote.get_by_poll_id(@poll.id)
     @owner = User.find(@poll.user_id)
@@ -120,7 +117,7 @@ get '/poll/:poll_id/?' do |poll_id|
     @can_copy = (@current_user and ((@is_owner and @current_user.can_copy_own_polls?) or @current_user.can_copy_all_polls?))
     @can_edit = (@current_user and (@is_owner and @current_user.can_edit_own_polls?) and (@votes.count == 0))
     @show_ads = (@show_ads and @owner.show_ads_on_my_polls?)
-    puts "Show ads: #{@show_ads}"
+    @logger.debug "Show ads: #{@show_ads}"
 
     # calculate the number of votes on each answer
     @answer_votes = @poll.calculate_answer_votes(@votes)
@@ -129,7 +126,7 @@ get '/poll/:poll_id/?' do |poll_id|
 end
 
 get '/poll/:poll_id/edit/?' do |poll_id|
-    puts "Editing poll: #{poll_id}"
+    @logger.debug "Editing poll: #{poll_id}"
 
     if not @current_user
         session["redirect_url"] = request.fullpath
@@ -149,7 +146,7 @@ get '/poll/:poll_id/edit/?' do |poll_id|
 end
 
 post '/poll/:poll_id/edit/?' do |poll_id|
-    puts "Editing poll (post): #{poll_id}"
+    @logger.debug "Editing poll (post): #{poll_id}"
 
     if not @current_user
         session["redirect_url"] = request.fullpath
@@ -205,13 +202,13 @@ post '/poll/:poll_id/edit/?' do |poll_id|
     @poll["chart_type"] = chart_type
     @poll.save
 
-    puts "Updated poll: #{@poll.id}"
+    @logger.debug "Updated poll: #{@poll.id}"
 
     redirect "/poll/#{@poll.id}/"
 end
 
 post '/poll/:poll_id/vote/?' do |poll_id|
-    puts "Voting on poll: #{poll_id}"
+    @logger.debug "Voting on poll: #{poll_id}"
     poll = Poll.find(poll_id)
 
     def get_redirect(embed, poll_id)

@@ -18,6 +18,7 @@ if config['db_username']
 end
 
 # need to load the models AFTER connecting to the database, because of the way MongoMapper sets up indexes
+require 'model/Log'
 require 'model/User'
 require 'model/Poll'
 require 'model/Vote'
@@ -28,9 +29,10 @@ Before every single request, we have to do a few things.
 Namely, check if the user is logged in, prepare the configuration and environment variables that we're going to use elsewhere, manage the session-based "flash" variable which displays a message to the user just once, load the data for the sidebar (if necessary), and determine whether to show ads for this request.
 =end
 before do
+    @logger = Logger.new(session["user_id"], @env["REMOTE_ADDR"])
     @ip = @env["REMOTE_ADDR"]
     if session["user_id"]
-        puts "Authenticated session from #{@ip}: #{session["user_id"]}"
+        @logger.debug "Authenticated session from #{@ip}: #{session["user_id"]}"
         @current_user = User.find(session["user_id"])
 
         @flash = session.delete("flash")
@@ -45,7 +47,7 @@ before do
 
         @show_ads = @current_user.show_me_ads?
     else
-        puts "Unauthenticated request from #{@env["REMOTE_ADDR"]}"
+        @logger.debug "Unauthenticated request from #{@env["REMOTE_ADDR"]}"
         @show_ads = true
     end
     @pogads = config["pogads"]

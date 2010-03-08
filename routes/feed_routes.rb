@@ -1,5 +1,5 @@
 get '/user/:username/polls/feed/?' do |username|
-    puts "Getting user polls feed: #{username}"
+    @logger.debug "Getting user polls feed: #{username}"
     @user = User.get_by_username(username)
     @polls = Poll.get_by_user_id(@user.id)
 

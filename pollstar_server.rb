@@ -398,7 +398,7 @@ get '/poll/:poll_id/embed/' do |poll_id|
     @votes = Vote.get_by_poll_id(@poll.id)
 
     # calculate the number of votes on each answer
-    @answer_votes = @poll.calculate_answer_votes
+    @answer_votes = @poll.calculate_answer_votes(@votes)
 
     haml :embed, :layout => false
 end

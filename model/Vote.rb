@@ -1,4 +1,11 @@
 
+=begin
+A single vote on a poll.
+
+The user_id is the voter's id, and if it's nil, then it was an anonymous vote.
+The username and user_full_name are denormalized values from the voter's User object.
+The answer_index corresponds to the index in the Poll's list of answers.
+=end
 class Vote
     include MongoMapper::Document
 

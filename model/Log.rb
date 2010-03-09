@@ -1,4 +1,11 @@
 
+=begin
+The Logger makes it easy to save Log messages, of different logging levels.
+
+It's instantiated with a user_id and IP address (the user_id is nil if nobody is logged in).
+
+It offers convenience methods for logging levels of :debug, :warn, and :error.
+=end
 class Logger
     def initialize(user_id, ip)
         @user_id = user_id
@@ -30,6 +37,14 @@ class Logger
     end
 end
 
+=begin
+A MongoDB object representing an individual log event.
+
+The user_id corresponds to the logged in user, and can be nil.
+The IP address is the requesting client's IP.
+The type is the logging level.
+The value is the string that is being logged.
+=end
 class Log
     include MongoMapper::Document
 

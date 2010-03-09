@@ -4,6 +4,7 @@ require 'haml'
 require 'sass'
 require 'mongo'
 require 'mongo_mapper'
+require 'pony'
 
 enable :sessions
 

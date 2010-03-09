@@ -44,6 +44,12 @@ post '/signup/?' do
     })
     @user.save
 
+    # send an email thanking them for joining
+    Pony.mail(:to => params["email"],
+        :from => @config["mailman_email"],
+        :subject => "thank you for joining #{@config["site_name"]}",
+        :body => haml(:email_welcome, :layout => false))
+
     session["user_id"] = @user.id
     redirect "/select_plan/"
 end

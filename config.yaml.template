@@ -4,6 +4,8 @@ site_hostname: "poll4.me"
 db_hostname: "localhost"
 db_name: "pollstar"
 
+mailman_email: "no-reply@poll4.me"
+
 pogads:
     sidebar_banner:
         zone_id: 22864

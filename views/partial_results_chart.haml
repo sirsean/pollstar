@@ -1,0 +1,19 @@
+#results_container
+    %table#results_chart
+        %thead
+            %tr
+                %td=""
+                %th="votes"
+        %tbody
+            - @answer_votes.each do |answer|
+                %tr
+                    %th
+                        ="#{answer["text"]}"
+                        - if answer["num_votes"] > 0
+                            ="(#{answer["num_votes"]})"
+                    %td="#{answer["num_votes"]}"
+
+:javascript
+    $(document).ready(function() {
+        $('#results_chart').visualize({ type: "#{@chart_type}", width: "#{@width}px", height: "#{@height}px" });
+    });

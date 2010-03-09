@@ -90,6 +90,14 @@ helpers do
         days = ((date - Time.now) / 86400).floor
         "#{days} days"
     end
+
+    def results_chart(answer_votes, chart_type, width, height)
+        @answer_votes = answer_votes
+        @chart_type = chart_type
+        @width = width
+        @height = height
+        haml :partial_results_chart, :layout => false
+    end
 end
 
 # load the routes for each module's functionality

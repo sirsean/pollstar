@@ -43,17 +43,7 @@
                 %li="#{answer}"
 
     - if @is_owner or @voted
-        #results_container
-            %table#results_chart
-                %thead
-                    %tr
-                        %td=""
-                        %th="votes"
-                %tbody
-                    - @answer_votes.each do |answer|
-                        %tr
-                            %th="#{answer["text"]}"
-                            %td="#{answer["num_votes"]}"
+        = results_chart(@answer_votes, "#{@poll["chart_type"] or "bar"}", 560, 400)
 
     - if @owner.can_embed_my_polls?
         ="embed this poll on another website by including this script on your page:"
@@ -78,7 +68,3 @@
             - else
                 %em="nobody has voted yet"
 
-:javascript
-    $(document).ready(function() {
-        $('#results_chart').visualize({ type: "#{@poll["chart_type"] or "bar"}", width: "560px", height: "400px" });
-    });

@@ -58,7 +58,7 @@
     - if @owner.can_embed_my_polls?
         ="embed this poll on another website by including this script on your page:"
         %br
-        %textarea{ :readonly => true, :rows => 4, :cols => 70 }="<script type=\"text/javascript\" src=\"http://#{@site_hostname}/poll/#{@poll.id}/embed.js?width=570&amp;height=520\"></script><noscript><a href=\"http://#{@site_hostname}/poll/#{@poll.id}/\">View the poll.</a></noscript>"
+        %textarea{ :readonly => true, :rows => 4, :cols => 70 }="<script type=\"text/javascript\" src=\"http://#{@site_hostname}/poll/#{@poll.id}/embed.js?width=570&amp;height=520\"></script><noscript><a href=\"http://#{@site_hostname}/poll/#{@poll.id}/\">#{@poll.question}</a></noscript>"
         %br
         
 

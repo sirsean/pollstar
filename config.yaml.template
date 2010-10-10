@@ -6,6 +6,10 @@ db_name: "pollstar"
 
 mailman_email: "no-reply@poll4.me"
 
+disqus:
+    shortname: null
+    developer: 1
+
 pogads:
     sidebar_banner:
         zone_id: 22864

@@ -51,6 +51,7 @@ before do
         @show_ads = true
     end
     @pogads = config["pogads"]
+    @disqus = config["disqus"]
 
     @site_name = config["site_name"]
     @site_hostname = config["site_hostname"]
@@ -97,6 +98,11 @@ helpers do
         @width = width
         @height = height
         haml :partial_results_chart, :layout => false
+    end
+
+    def show_disqus(poll)
+        @poll = poll
+        haml :partial_show_disqus, :layout => false
     end
 end
 

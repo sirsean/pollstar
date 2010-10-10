@@ -45,63 +45,53 @@ class User
 How long the user's polls last before they expire and can't be voted on any more.
 If this is nil, then the polls will never expire.
 This is based on the user's account level.
+
+Polls no longer expire
 =end
     def poll_duration
-        begin
-            if @account_level == :free
-                3.months
-            else
-                nil # any paid account has no expiration date on its polls
-            end
-        rescue
-            3.months #they don't have an account level, so we're calling them a free account
-        end
+        nil
     end
 
+=begin
+Removed different plan levels; all polls have unlimited votes
+=end
     def max_votes_per_poll
-        if @account_level == :deluxe or @account_level == :standard
-            return nil
-        elsif @account_level == :cheapo
-            return 200
-        else 
-            return 50
-        end
+        nil
     end
 
+=begin
+Removed different plan levels; all polls have unlimited answers
+=end
     def max_answers_per_poll
-        if [:deluxe, :standard, :cheapo].include?(@account_level)
-            return nil
-        else
-            return 3
-        end
+        nil
     end
 
     def can_copy_own_polls?
-        [:deluxe, :standard, :cheapo].include?(@account_level)
+        true
     end
 
     def can_copy_all_polls?
-        [:deluxe, :standard].include?(@account_level)
+        true
     end
 
     def can_edit_own_polls?
-        [:deluxe, :standard].include?(@account_level)
+        true
     end
 
     def can_choose_chart_type?
-        [:deluxe, :standard].include?(@account_level)
+        true
     end
 
     def show_me_ads?
-        [:free].include?(@account_level)
+        true
     end
 
     def show_ads_on_my_polls?
-        [:free, :cheapo].include?(@account_level)
+        true
     end
 
     def can_embed_my_polls?
-        [:deluxe].include?(@account_level)
+        true
     end
 
 end

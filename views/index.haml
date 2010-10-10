@@ -1,4 +1,6 @@
 
+%p.notice="after trying to \"monetize\" poll4.me from the start, i've discovered that people don't find it worth paying for. so i'm making it free for everyone, for the foreseeable future. enjoy, please!"
+
 %h2="welcome to poll4.me"
 
 %ul
@@ -10,42 +12,14 @@
 
 %ul.features
     %li="create unlimited polls"
-    %li="polls expire after 3 months"
-    %li="ads will be displayed"
-    %li="results shown as a bar chart"
-    %li="rss feed for your polls"
-    %li="max 3 answer choices per poll"
-    %li="max 50 votes per poll"
-
-%h3="cheapo: $2/month"
-
-%ul.features
-    %li="you will not see ads, but people viewing your polls will"
     %li="polls never expire"
-    %li="you can copy your polls, to take them again and see changing results over time"
-    %li.unimplemented="invite voters via email"
-    %li="unlimited answer choices per poll"
-    %li="max 200 votes per poll"
-
-%h3="standard: $5/month"
-
-%ul.features
-    %li="nobody viewing your polls will see ads"
-    %li="you can copy any poll"
+    %li="ads will be displayed"
     %li="choose whether you want results as a bar chart or pie chart"
-    %li="edit your polls"
+    %li="rss feed for your polls"
+    %li="unlimited answer choices per poll"
     %li="unlimited votes per poll"
-    %li.unimplemented
-        ="your polls can become"
-        %strong="featured"
-        ="and become visible to many more voters"
-
-%h3="deluxe: $10/month"
-
-%ul.features
+    %li="you can copy any poll, to take them again and see changing results over time"
     %li="embed polls on external sites"
-    %li.unimplemented="private polls, available only to people you invite"
-    %li.unimplemented="custom invitation text"
 
 - if not @current_user
     %p

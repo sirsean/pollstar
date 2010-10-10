@@ -34,9 +34,6 @@
                 - if @sidebar
                     .user_info
                         %a{ :href => "/user/#{@sidebar["username"]}/" }="#{@sidebar["full_name"]}"
-                    .account_level_info
-                        ="you're on the #{@sidebar["account_level"]} plan"
-                        %a{ :href => "/select_plan/" }="select a new plan"
                     - if not @sidebar["recent_polls"].empty?
                         .recent_polls
                             %span="your recent polls"

@@ -51,7 +51,7 @@ post '/signup/?' do
         :body => haml(:email_welcome, :layout => false))
 
     session["user_id"] = @user.id
-    redirect "/select_plan/"
+    redirect "/home/"
 end
 
 get '/login/?' do

@@ -42,7 +42,6 @@ before do
         @sidebar = {
             "username" => @current_user.username,
             "full_name" => @current_user.full_name,
-            "account_level" => @current_user.account_level,
             "recent_polls" => Poll.get_latest_by_user_id(@current_user.id, 4),
         }
 
